@@ -30,17 +30,28 @@ namespace Kirichenko.Nsudotnet.Enigma
                     try
                     {
                         inputFile = new FileInfo(args[1]);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Unable to get file: {0}", args[1]);
+                        return;
+                    }
+                    try
+                    {
                         algorithm = Enigma.GetAlgotithm(args[2]);
-                        outputFile = new FileInfo(args[3]);
                     }
                     catch (UnsupportedAlgorithmException)
                     {
                         Console.WriteLine("Unsupported algorithm: {0}", args[2]);
                         return;
                     }
+                    try
+                    {
+                        outputFile = new FileInfo(args[3]);
+                    }
                     catch (Exception)
                     {
-                        Console.WriteLine("Unable to get file: {0}", args[1]);
+                        Console.WriteLine("Unable to get file: {0}", args[3]);
                         return;
                     }
                     Enigma.Encrypt(inputFile, algorithm, outputFile);
@@ -54,18 +65,37 @@ namespace Kirichenko.Nsudotnet.Enigma
                     try
                     {
                         inputFile = new FileInfo(args[1]);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Unable to get file: {0}", args[1]);
+                        return; 
+                    }
+                    try
+                    {
                         algorithm = Enigma.GetAlgotithm(args[2]);
-                        keyFile = new FileInfo(args[3]);
-                        outputFile = new FileInfo(args[4]);
                     }
                     catch (UnsupportedAlgorithmException)
                     {
                         Console.WriteLine("Unsupported algorithm: {0}", args[2]);
                         return;
                     }
+                    try
+                    {
+                        keyFile = new FileInfo(args[3]);
+                    }
                     catch (Exception)
                     {
-                        Console.WriteLine("Unable to get file: {0}", args[1]);
+                        Console.WriteLine("Unable to get file: {0}", args[3]);
+                        return;
+                    }
+                    try
+                    {
+                        outputFile = new FileInfo(args[4]);
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Unable to get file: {0}", args[4]);
                         return;
                     }
                     Enigma.Decrypt(inputFile, algorithm, keyFile, outputFile);
