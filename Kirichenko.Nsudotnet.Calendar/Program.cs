@@ -40,9 +40,18 @@ namespace Kirichenko.Nsudotnet.Calendar
         private static void PrintDaysOfWeekHeader()
         {
             var oldForegroundColor = Console.ForegroundColor;
-            Console.Write("MO TU WE TH FR ");
+            var day = DateTime.Today.AddDays(DayOfWeek.Monday - DateTime.Today.DayOfWeek);
+            for (var i = 0; i < 5; ++i)
+            {
+                Console.Write("{0,4:ddd}", day);
+                day = day.AddDays(1);
+            }
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("SA SU");
+            for (var i = 0; i < 2; ++i)
+            {
+                Console.Write("{0,4:ddd}", day);
+                day = day.AddDays(1);
+            }
             Console.ForegroundColor = oldForegroundColor;
             Console.WriteLine();
         }
@@ -52,7 +61,7 @@ namespace Kirichenko.Nsudotnet.Calendar
             var firstDay = new DateTime(year, month, 1);
             for (var i = 0; i < ((int)firstDay.DayOfWeek + 6) % 7; ++i)
             {
-                Console.Write("   ");
+                Console.Write("    ");
             }
         }
 
@@ -68,10 +77,9 @@ namespace Kirichenko.Nsudotnet.Calendar
             {
                 Console.ForegroundColor = ConsoleColor.Red;
             }
-            Console.Write("{0,2}", monthDay.Day);
+            Console.Write("{0,4}", monthDay.Day);
             Console.BackgroundColor = oldBackgroundColor;
             Console.ForegroundColor = oldForegroundColor;
-            Console.Write(" ");
             if (monthDay.DayOfWeek == DayOfWeek.Sunday)
             {
                 Console.WriteLine();
