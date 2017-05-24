@@ -46,11 +46,14 @@ namespace Kirichenko.Nsudotnet.Enigma
                         keyWriter.WriteLine(Convert.ToBase64String(algorithm.Key));
                         keyWriter.WriteLine(Convert.ToBase64String(algorithm.IV));
                     }
-                    using (var cryptoStream = new CryptoStream(outputStream, algorithm.CreateEncryptor(algorithm.Key, algorithm.IV), CryptoStreamMode.Write))
+                    using (var cryptoTransform = algorithm.CreateEncryptor(algorithm.Key, algorithm.IV))
                     {
-                        inputStream.CopyTo(cryptoStream);
+                        using (var cryptoStream =
+                            new CryptoStream(outputStream, cryptoTransform, CryptoStreamMode.Write))
+                        {
+                            inputStream.CopyTo(cryptoStream);
+                        }
                     }
-
                 }
             }
         }
@@ -66,9 +69,12 @@ namespace Kirichenko.Nsudotnet.Enigma
                         algorithm.Key = Convert.FromBase64String(keyReader.ReadLine());
                         algorithm.IV = Convert.FromBase64String(keyReader.ReadLine());
                     }
-                    using (var cryptoStream = new CryptoStream(inputStream, algorithm.CreateDecryptor(algorithm.Key, algorithm.IV), CryptoStreamMode.Read))
+                    using (var cryptoTransform = algorithm.CreateDecryptor(algorithm.Key, algorithm.IV))
                     {
-                        cryptoStream.CopyTo(outputStream);
+                        using (var cryptoStream = new CryptoStream(inputStream, cryptoTransform, CryptoStreamMode.Read))
+                        {
+                            cryptoStream.CopyTo(outputStream);
+                        }
                     }
                 }
             }
